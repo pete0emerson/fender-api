@@ -120,7 +120,7 @@ def twilio():
     body = request.form['Body']
     data = parse_twilio_data(body)
     db = get_db()
-    db.execute("insert into messages (message, state, plate) values (?,?,?)", % (data['msg'], data['state'], data['plate']))
+    db.execute("insert into messages (message, state, plate) values (?,?,?)", (data['msg'], data['state'], data['plate']))
     db.commit()
     return 'OK'
 
