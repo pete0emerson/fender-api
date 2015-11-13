@@ -4,6 +4,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from datetime import timedelta
 from functools import update_wrapper
 from twilio import twiml
+import re
 
 # configuration
 # path to fender db needs to be set in environmental variable
@@ -133,11 +134,14 @@ def twilio():
     return str(resp)
 
 def parse_twilio_data(body):
-    parts = body.split('.')
-    msg = parts[1]
-    state_license = parts[0].split(' ')
-    state = state_license[0]
-    plate = ''.join(state_license[3:])
+    results = re.match(r'^\s*(.+?)\s+license plate (.+?)\.\s*(.*?)$', body, re.IGNORECASE)
+    state = results.group(1)
+    state = state.title()
+    state = state.replace(' ', '')
+    plate = results.group(2)
+    plate = plate.replace(' ', '')
+    plate = plate.upper()
+    msg = results.group(3)
     return {'state': state, 'plate': plate, 'msg': msg}
 
 def format_message_json(row):
