@@ -1,6 +1,8 @@
 import sqlite3
 import os
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, jsonify, make_response, current_app
+from datetime import timedelta
+from functools import update_wrapper
 
 # configuration
 # path to fender db needs to be set in environmental variable
@@ -12,6 +14,46 @@ PASSWORD = 'fenderpw'
 
 app = Flask(__name__)
 
+# allow for crossdomain
+def crossdomain(origin=None, methods=None, headers=None, max_age=21600, attach_to_all=True, automatic_options=True):
+    if methods is not None:
+        methods = ', '.join(sorted(x.upper() for x in methods))
+    if headers is not None and not isinstance(headers, basestring):
+        headers = ', '.join(x.upper() for x in headers)
+    if not isinstance(origin, basestring):
+        origin = ', '.join(origin)
+    if isinstance(max_age, timedelta):
+        max_age = max_age.total_seconds()
+
+    def get_methods():
+        if methods is not None:
+            return methods
+
+        options_resp = current_app.make_default_options_response()
+        return options_resp.headers['allow']
+
+    def decorator(f):
+        def wrapped_function(*args, **kwargs):
+            if automatic_options and request.method == 'OPTIONS':
+                resp = current_app.make_default_options_response()
+            else:
+                resp = make_response(f(*args, **kwargs))
+            if not attach_to_all and request.method != 'OPTIONS':
+                return resp
+
+            h = resp.headers
+
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
+
 def connect_db():
     return sqlite3.connect(DATABASE)
 
@@ -21,6 +63,7 @@ def get_db():
     return g.sqlite_db
 
 @app.route('/db')
+@crossdomain(origin='*')
 def db_get():
     db = get_db()
     cur = db.execute('select * from messages')
@@ -28,6 +71,7 @@ def db_get():
     return str(entries)
 
 @app.route('/<state>/<plate>', methods=['GET'])
+@crossdomain(origin='*')
 def get_all_messages(state, plate):
     db = get_db()
     cur = db.execute("select * from messages where state='%s' and plate='%s'" % (state, plate))
@@ -35,6 +79,7 @@ def get_all_messages(state, plate):
     return str(entries)
 
 @app.route('/<state>/<plate>', methods=['POST'])
+@crossdomain(origin='*')
 def post_message(state, plate):
     data = request.json
     msg = data['message']
@@ -44,6 +89,7 @@ def post_message(state, plate):
     return msg
 
 @app.route('/users/add', methods=['POST'])
+@crossdomain(origin='*')
 def add_subscriber(state, plate):
     data = request.json
     db = get_db()
@@ -52,6 +98,7 @@ def add_subscriber(state, plate):
     return 'OK'
 
 @app.route('/users/<state>', methods=['GET'])
+@crossdomain(origin='*')
 def get_subscribers_by_state(state):
     data = request.json
     db = get_db()
@@ -68,11 +115,12 @@ def status():
     return 'OK'
 
 @app.route('/twilio', methods=['POST'])
+@crossdomain(origin='*')
 def twilio():
     body = request.form['Body']
     data = parse_twilio_data(body)
     db = get_db()
-    db.execute("insert into messages (message, state, plate) values ('%s','%s','%s')" % (data['msg'], data['state'], data['plate']))
+    db.execute("insert into messages (message, state, plate) values (?,?,?)", % (data['msg'], data['state'], data['plate']))
     db.commit()
     return 'OK'
 
