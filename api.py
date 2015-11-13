@@ -21,13 +21,9 @@ def get_db():
 @app.route('/db')
 def db_get():
     db = get_db()
-    cur = db.execute('select title, text from entries order by id desc')
+    cur = db.execute('select plate, message from messages')
     entries = cur.fetchall()
-    e = []
-    for entry in entries:
-        e.append({'title':entry[0],'text':entry[1]})
-    print "Entries: %s" % e
-    return render_template('show_entries.html', entries=e)
+    return str(entries)
 
 
 @app.route('/')
