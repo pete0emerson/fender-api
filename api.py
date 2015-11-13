@@ -118,13 +118,17 @@ def status():
 @app.route('/twilio', methods=['POST'])
 @crossdomain(origin='*')
 def twilio():
-    body = request.form['Body']
-    data = parse_twilio_data(body)
-    db = get_db()
-    db.execute("insert into messages (message, state, plate) values (?,?,?)", (data['msg'], data['state'], data['plate']))
-    db.commit()
-    resp = twiml.Response()
-    resp.message("Fender has received your beep.")
+    try:
+        body = request.form['Body']
+        data = parse_twilio_data(body)
+        db = get_db()
+        db.execute("insert into messages (message, state, plate) values (?,?,?)", (data['msg'], data['state'], data['plate']))
+        db.commit()
+        resp = twiml.Response()
+        resp.message("Fender has received your beep.")
+    except:
+        resp = twiml.Response()
+        resp.message("Fender could not process your beep. Please reformat and try again.")
     print str(resp)
     return str(resp)
 
