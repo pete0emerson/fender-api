@@ -3,6 +3,7 @@ import os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, jsonify, make_response, current_app
 from datetime import timedelta
 from functools import update_wrapper
+from twilio import twiml
 
 # configuration
 # path to fender db needs to be set in environmental variable
@@ -122,7 +123,10 @@ def twilio():
     db = get_db()
     db.execute("insert into messages (message, state, plate) values (?,?,?)", (data['msg'], data['state'], data['plate']))
     db.commit()
-    return 'OK'
+    resp = twiml.Response()
+    resp.message("Fender has received your beep.")
+    print str(resp)
+    return str(resp)
 
 def parse_twilio_data(body):
     parts = body.split('.')
@@ -131,7 +135,6 @@ def parse_twilio_data(body):
     state = state_license[0]
     plate = ''.join(state_license[3:])
     return {'state': state, 'plate': plate, 'msg': msg}
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888, debug=True)
