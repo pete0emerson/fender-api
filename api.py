@@ -69,7 +69,7 @@ def db_get():
     db = get_db()
     cur = db.execute('select * from messages')
     entries = cur.fetchall()
-    return str(entries)
+    return jsonify(items=map(format_message_json, entries))
 
 @app.route('/<state>/<plate>', methods=['GET'])
 @crossdomain(origin='*')
@@ -77,7 +77,7 @@ def get_all_messages(state, plate):
     db = get_db()
     cur = db.execute("select * from messages where state='%s' and plate='%s'" % (state, plate))
     entries = cur.fetchall()
-    return str(entries)
+    return jsonify(items=map(format_message_json, entries))
 
 @app.route('/<state>/<plate>', methods=['POST'])
 @crossdomain(origin='*')
@@ -105,7 +105,7 @@ def get_subscribers_by_state(state):
     db = get_db()
     cur = db.execute("select * from subscribers where state='%s'" % state)
     entries = cur.fetchall()
-    return str(entries)
+    return jsonify(items=map(format_subscriber_json, entries))
 
 @app.route('/')
 def hello_world():
@@ -139,6 +139,12 @@ def parse_twilio_data(body):
     state = state_license[0]
     plate = ''.join(state_license[3:])
     return {'state': state, 'plate': plate, 'msg': msg}
+
+def format_message_json(row):
+    return {'state': row[2], 'license_plate': row[1], 'msg': row[3], 'timestamp': row[4]}
+
+def format_subscriber_json(row):
+    return {'state': row[1], 'license_plate': row[0], 'phone_number': row[2]}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888, debug=True)
