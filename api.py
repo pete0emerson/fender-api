@@ -70,9 +70,20 @@ def status():
 @app.route('/twilio', methods=['POST'])
 def twilio():
     body = request.form['Body']
-    print "I got a body of: --->%s<---" % body
-    print request.get_data()
+    data = parse_twilio_data(body)
+    db = get_db()
+    db.execute("insert into messages (message, state, plate) values ('%s','%s','%s')" % (data['msg'], data['state'], data['plate']))
+    db.commit()
     return 'OK'
+
+def parse_twilio_data(body):
+    parts = body.split('.')
+    msg = parts[1]
+    state_license = parts[0].split(' ')
+    state = state_license[0]
+    plate = ''.join(state_license[3:])
+    return {'state': state, 'plate': plate, 'msg': msg}
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888, debug=True)
