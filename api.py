@@ -1,8 +1,10 @@
 import sqlite3
+import os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 # configuration
-DATABASE = '/Users/liao/dev/fender-api/fender.db'
+# path to fender db needs to be set in environmental variable
+DATABASE = os.environ['FENDER_DB']
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'fender'
