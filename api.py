@@ -170,7 +170,7 @@ def grab_emojis(rec):
     emoji_list = []
     rec['emojis'] = emoji_list
     for e in EMOJIS:
-        if e in rec['msg']:
+        if e in rec['msg'].lower():
             emoji_list.append(EMOJIS[e])
 
 
