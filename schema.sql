@@ -13,3 +13,7 @@ create table subscribers (
     state text not null,
     phone_number text not null
 );
+
+insert into messages (plate, state, message) values ('CA', '123ABC', 'You are awesome');
+insert into messages (plate, state, message) values ('CA', '123ABC', 'You are awesome :heart:');
+
