@@ -34,14 +34,30 @@ def get_all_messages(state, plate):
     entries = cur.fetchall()
     return str(entries)
 
-@app.route('/<state>/<plate>/post', methods=['POST'])
+@app.route('/<state>/<plate>', methods=['POST'])
 def post_message(state, plate):
     data = request.json
     msg = data['message']
     db = get_db()
-    cur = db.execute("insert into messages (message, state, plate) values ('%s','%s','%s')" % (msg, state, plate))
+    db.execute("insert into messages (message, state, plate) values ('%s','%s','%s')" % (msg, state, plate))
     db.commit()
     return msg
+
+@app.route('/users/add', methods=['POST'])
+def add_subscriber(state, plate):
+    data = request.json
+    db = get_db()
+    db.execute("insert into subscribers (phone_number, state, plate) values ('%s','%s','%s')" % (data['phone_number'], data['state'], data['plate']))
+    db.commit()
+    return 'OK'
+
+@app.route('/users/<state>', methods=['GET'])
+def get_subscribers_by_state(state):
+    data = request.json
+    db = get_db()
+    cur = db.execute("select * from subscribers where state='%s'" % state)
+    entries = cur.fetchall()
+    return str(entries)
 
 @app.route('/')
 def hello_world():

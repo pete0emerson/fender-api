@@ -16,4 +16,5 @@ create table subscribers (
 
 insert into messages (plate, state, message) values ('CA', '123ABC', 'You are awesome');
 insert into messages (plate, state, message) values ('CA', '123ABC', 'You are awesome :heart:');
+insert into subscribers (state, plate, phone_number) values ('CA', '123ABC', '4081234567')
 
