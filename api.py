@@ -91,7 +91,7 @@ def post_message(state, plate):
 
 @app.route('/users/add', methods=['POST'])
 @crossdomain(origin='*')
-def add_subscriber(state, plate):
+def add_subscriber():
     data = request.json
     db = get_db()
     db.execute("insert into subscribers (phone_number, state, plate) values ('%s','%s','%s')" % (data['phone_number'], data['state'], data['plate']))
