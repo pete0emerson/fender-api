@@ -110,7 +110,11 @@ def get_subscribers_by_state(state):
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    data = request.json
+    db = get_db()
+    cur = db.execute("SELECT * FROM messages ORDER BY timestamp DESC LIMIT 50;")
+    entries = cur.fetchall()
+    return jsonify(items=map(format_message_json, entries))
 
 @app.route('/_status/')
 def status():
