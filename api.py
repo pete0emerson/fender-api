@@ -27,12 +27,21 @@ def db_get():
     entries = cur.fetchall()
     return str(entries)
 
-@app.route('/<state>/<plate>')
-def get_plate(state, plate):
+@app.route('/<state>/<plate>', methods=['GET'])
+def get_all_messages(state, plate):
     db = get_db()
-    cur = db.execute("select * from messages where state='%s' and plate='%s'" % (state,plate))
+    cur = db.execute("select * from messages where state='%s' and plate='%s'" % (state, plate))
     entries = cur.fetchall()
     return str(entries)
+
+@app.route('/<state>/<plate>/post', methods=['POST'])
+def post_message(state, plate):
+    data = request.json
+    msg = data['message']
+    db = get_db()
+    cur = db.execute("insert into messages (message, state, plate) values ('%s','%s','%s')" % (msg, state, plate))
+    db.commit()
+    return msg
 
 @app.route('/')
 def hello_world():
