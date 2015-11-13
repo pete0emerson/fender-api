@@ -2,7 +2,8 @@ drop table if exists messages;
 create table messages (
   id integer primary key autoincrement,
   plate text not null,
-  message text not null
+  message text not null,
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 drop table if exists subscribers;
