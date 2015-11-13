@@ -13,6 +13,16 @@ DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'fender'
 PASSWORD = 'fenderpw'
+EMOJIS = {'thumbs up': '\xF0\x9F\x91\x8D',
+          'thumbsup': '\xF0\x9F\x91\x8D',
+          'heart': '\xE2\x99\xA5',
+          'wave': '\xF0\x9F\x91\x8B',
+          'rage': '\xF0\x9F\x98\xA1',
+          'smile': '\xF0\x9F\x98\x83',
+          'smiley': '\xF0\x9F\x98\x83',
+          'middle finger': '\xF0\x9F\x96\x95',
+          'middlefinger': '\xF0\x9F\x96\x95'
+          }
 
 app = Flask(__name__)
 
@@ -145,14 +155,24 @@ def parse_twilio_data(body):
     plate = results.group(2)
     plate = plate.replace(' ', '')
     plate = plate.upper()
-    msg = results.group(3)
+    msg = results.group(3).strip()
     return {'state': state, 'plate': plate, 'msg': msg}
 
 def format_message_json(row):
-    return {'state': row[2], 'license_plate': row[1], 'msg': row[3], 'timestamp': row[4]}
+    rec = {'state': row[2], 'license_plate': row[1], 'msg': row[3], 'timestamp': row[4]}
+    grab_emojis(rec)
+    return rec
 
 def format_subscriber_json(row):
     return {'state': row[1], 'license_plate': row[0], 'phone_number': row[2]}
+
+def grab_emojis(rec):
+    emoji_list = []
+    rec['emojis'] = emoji_list
+    for e in EMOJIS:
+        if e in rec['msg']:
+            emoji_list.append(EMOJIS[e])
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888, debug=True)
