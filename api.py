@@ -51,5 +51,12 @@ def hello_world():
 def status():
     return 'OK'
 
+@app.route('/twilio', methods=['POST'])
+def twilio():
+    body = request.form['Body']
+    print "I got a body of: --->%s<---" % body
+    print request.get_data()
+    return 'OK'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8888, debug=True)
