@@ -2,7 +2,7 @@ import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 
 # configuration
-DATABASE = '/home/pete/db/fender.db'
+DATABASE = '/Users/liao/dev/fender-api/fender.db'
 DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'fender'
@@ -21,10 +21,16 @@ def get_db():
 @app.route('/db')
 def db_get():
     db = get_db()
-    cur = db.execute('select plate, message from messages')
+    cur = db.execute('select * from messages')
     entries = cur.fetchall()
     return str(entries)
 
+@app.route('/<state>/<plate>')
+def get_plate(state, plate):
+    db = get_db()
+    cur = db.execute("select * from messages where state='%s' and plate='%s'" % (state,plate))
+    entries = cur.fetchall()
+    return str(entries)
 
 @app.route('/')
 def hello_world():
