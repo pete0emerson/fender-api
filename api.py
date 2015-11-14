@@ -13,15 +13,15 @@ DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'fender'
 PASSWORD = 'fenderpw'
-EMOJIS = {'thumbs up': '\xF0\x9F\x91\x8D',
-          'thumbsup': '\xF0\x9F\x91\x8D',
-          'heart': '\xE2\x99\xA5',
-          'wave': '\xF0\x9F\x91\x8B',
-          'rage': '\xF0\x9F\x98\xA1',
-          'smile': '\xF0\x9F\x98\x83',
-          'smiley': '\xF0\x9F\x98\x83',
-          'middle finger': '\xF0\x9F\x96\x95',
-          'middlefinger': '\xF0\x9F\x96\x95'
+EMOJIS = {'thumbs up': '\\xF0\\x9F\\x91\\x8D',
+          'thumbsup': '\\xF0\\x9F\\x91\\x8D',
+          'heart': '\\xE2\\x99\\xA5',
+          'wave': '\\xF0\\x9F\\x91\\x8B',
+          'rage': '\\xF0\\x9F\\x98\\xA1',
+          'smile': '\\xF0\\x9F\\x98\\x83',
+          'smiley': '\\xF0\\x9F\\x98\\x83',
+          'middle finger': '\\xF0\\x9F\\x96\\x95',
+          'middlefinger': '\\xF0\\x9F\\x96\\x95'
           }
 
 app = Flask(__name__)
