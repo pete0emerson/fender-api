@@ -22,7 +22,7 @@ EMOJIS = {'thumbs up': str('\xF0\x9F\x91\x8D'),
           'smiley': str('\xF0\x9F\x98\x83'),
           'middle finger': str('\xF0\x9F\x96\x95'),
           'middlefinger': str('\xF0\x9F\x96\x95'),
-          'car': str('\xF0\x9F\x9A\x97'),
+          'vehicle': str('\xF0\x9F\x9A\x97'),
           'skull': str('\xE2\x98\xA0'),
           'death': str('\xE2\x98\xA0'),
           'cop': str('\xF0\x9F\x9A\xA8'),
@@ -179,8 +179,9 @@ def grab_emojis(rec):
     emoji_list = []
     rec['emojis'] = emoji_list
     for e in EMOJIS:
-        if e in rec['msg'].lower():
-            for i in range(rec['msg'].count(e)):
+        msg = rec['msg'].lower()
+        if e in msg:
+            for i in range(msg.count(e)):
                 emoji_list.append(EMOJIS[e])
     for e in re.findall('[^\x00-\x7F]+', rec['msg']):
         emoji_list.append(e)
