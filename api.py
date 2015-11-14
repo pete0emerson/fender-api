@@ -95,7 +95,7 @@ def db_get():
 @crossdomain(origin='*')
 def get_all_messages(state, plate):
     db = get_db()
-    cur = db.execute("select * from messages where state='%s' and plate='%s'" % (state, plate))
+    cur = db.execute("select * from messages where state='%s' and plate='%s' order by timestamp desc" % (state, plate))
     entries = cur.fetchall()
     return jsonify(items=map(format_message_json, entries))
 
