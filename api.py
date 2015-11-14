@@ -21,7 +21,16 @@ EMOJIS = {'thumbs up': '\\xF0\\x9F\\x91\\x8D',
           'smile': '\\xF0\\x9F\\x98\\x83',
           'smiley': '\\xF0\\x9F\\x98\\x83',
           'middle finger': '\\xF0\\x9F\\x96\\x95',
-          'middlefinger': '\\xF0\\x9F\\x96\\x95'
+          'middlefinger': '\\xF0\\x9F\\x96\\x95',
+          'car': '\\xF0\\x9F\\x9A\\x97',
+          'skull': '\\xE2\\x98\\xA0',
+          'death': '\\xE2\\x98\\xA0',
+          'cop': '\\xF0\\x9F\\x9A\\xA8',
+          'cops': '\\xF0\\x9F\\x9A\\xA8',
+          'police': '\\xF0\\x9F\\x9A\\xA8',
+          'speed': '\\xF0\\x9F\\x8F\\x8E',
+          'speeding': '\\xF0\\x9F\\x8F\\x8E',
+          'race': '\\xF0\\x9F\\x8F\\x8E'
           }
 
 app = Flask(__name__)
