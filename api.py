@@ -180,7 +180,8 @@ def grab_emojis(rec):
     rec['emojis'] = emoji_list
     for e in EMOJIS:
         if e in rec['msg'].lower():
-            emoji_list.append(EMOJIS[e])
+            for i in range(rec['msg'].count(e)):
+                emoji_list.append(EMOJIS[e])
 
 
 if __name__ == '__main__':
