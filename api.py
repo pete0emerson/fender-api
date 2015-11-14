@@ -182,10 +182,6 @@ def grab_emojis(rec):
         if e in rec['msg'].lower():
             for i in range(rec['msg'].count(e)):
                 emoji_list.append(EMOJIS[e])
-    for e in EMOJIS.values():
-        if e in rec['msg']:
-            for i in range(rec['msg'].count(e)):
-                emoji_list.append(e)
 
 
 if __name__ == '__main__':
