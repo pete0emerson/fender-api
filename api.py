@@ -182,7 +182,7 @@ def grab_emojis(rec):
         if e in rec['msg'].lower():
             for i in range(rec['msg'].count(e)):
                 emoji_list.append(EMOJIS[e])
-    for e in re.findall('[^\u0000-\u007F]+', rec['msg']):
+    for e in re.findall('[^\u0000-\u00CF]+', rec['msg']):
         emoji_list.append(e)
 
 
