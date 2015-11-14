@@ -107,7 +107,7 @@ def post_message(state, plate):
     db = get_db()
     db.execute("insert into messages (message, state, plate) values ('%s','%s','%s')" % (msg, state, plate))
     db.commit()
-    return msg
+    return jsonify(status='ok')
 
 @app.route('/users/add', methods=['POST'])
 @crossdomain(origin='*')
@@ -116,7 +116,7 @@ def add_subscriber():
     db = get_db()
     db.execute("insert into subscribers (phone_number, state, plate) values ('%s','%s','%s')" % (data['phone_number'], data['state'], data['plate']))
     db.commit()
-    return 'OK'
+    return jsonify(status='ok')
 
 @app.route('/users/<state>', methods=['GET'])
 @crossdomain(origin='*')
@@ -154,7 +154,7 @@ def twilio():
         resp = twiml.Response()
         resp.message("Fender could not process your beep. Please reformat and try again.")
     print str(resp)
-    return str(resp)
+    return jsonify(msg=str(resp))
 
 def parse_twilio_data(body):
     results = re.match(r'^\s*(.+?)\s+license plate (.+?)\.\s*(.*?)$', body, re.IGNORECASE)
