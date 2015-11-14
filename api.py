@@ -13,24 +13,24 @@ DEBUG = True
 SECRET_KEY = 'development key'
 USERNAME = 'fender'
 PASSWORD = 'fenderpw'
-EMOJIS = {'thumbs up': '\\xF0\\x9F\\x91\\x8D',
-          'thumbsup': '\\xF0\\x9F\\x91\\x8D',
-          'heart': '\\xE2\\x99\\xA5',
-          'wave': '\\xF0\\x9F\\x91\\x8B',
-          'rage': '\\xF0\\x9F\\x98\\xA1',
-          'smile': '\\xF0\\x9F\\x98\\x83',
-          'smiley': '\\xF0\\x9F\\x98\\x83',
-          'middle finger': '\\xF0\\x9F\\x96\\x95',
-          'middlefinger': '\\xF0\\x9F\\x96\\x95',
-          'car': '\\xF0\\x9F\\x9A\\x97',
-          'skull': '\\xE2\\x98\\xA0',
-          'death': '\\xE2\\x98\\xA0',
-          'cop': '\\xF0\\x9F\\x9A\\xA8',
-          'cops': '\\xF0\\x9F\\x9A\\xA8',
-          'police': '\\xF0\\x9F\\x9A\\xA8',
-          'speed': '\\xF0\\x9F\\x8F\\x8E',
-          'speeding': '\\xF0\\x9F\\x8F\\x8E',
-          'race': '\\xF0\\x9F\\x8F\\x8E'
+EMOJIS = {'thumbs up': str('\xF0\x9F\x91\x8D'),
+          'thumbsup': str('\xF0\x9F\x91\x8D'),
+          'heart': str('\xE2\x99\xA5'),
+          'wave': str('\xF0\x9F\x91\x8B'),
+          'rage': str('\xF0\x9F\x98\xA1'),
+          'smile': str('\xF0\x9F\x98\x83'),
+          'smiley': str('\xF0\x9F\x98\x83'),
+          'middle finger': str('\xF0\x9F\x96\x95'),
+          'middlefinger': str('\xF0\x9F\x96\x95'),
+          'car': str('\xF0\x9F\x9A\x97'),
+          'skull': str('\xE2\x98\xA0'),
+          'death': str('\xE2\x98\xA0'),
+          'cop': str('\xF0\x9F\x9A\xA8'),
+          'cops': str('\xF0\x9F\x9A\xA8'),
+          'police': str('\xF0\x9F\x9A\xA8'),
+          'speed': str('\xF0\x9F\x8F\x8E'),
+          'speeding': str('\xF0\x9F\x8F\x8E'),
+          'race': str('\xF0\x9F\x8F\x8E')
           }
 
 app = Flask(__name__)
